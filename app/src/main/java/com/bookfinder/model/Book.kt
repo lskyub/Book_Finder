@@ -24,7 +24,7 @@ object Book {
                 var pageCount: Int,
                 var printType: String,
                 var categories: ArrayList<String>,
-                var averageRating: Int,
+                var averageRating: Float,
                 var ratingsCount: Int,
                 var maturityRating: String,
                 var allowAnonLogging: Boolean,
