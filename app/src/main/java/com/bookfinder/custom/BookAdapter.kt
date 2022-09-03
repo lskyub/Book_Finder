@@ -1,7 +1,8 @@
-package com.bookfinder.adapter
+package com.bookfinder.custom
 
 import android.content.Context
-import android.net.Uri
+import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
@@ -13,6 +14,7 @@ import com.bookfinder.model.Book
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 class BookAdapter(
     var context: Context,
@@ -24,16 +26,29 @@ class BookAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         getItem(position).run {
-            this.volumeInfo.imageLinks.thumbnail.run {
-                Glide.with(context).load(this).into(holder.ivPicture)
+            try {
+                if (volumeInfo.imageLinks == null) {
+                    holder.ivPicture.setImageResource(0)
+                } else {
+                    Glide.with(context).load(volumeInfo.imageLinks.thumbnail)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true).into(holder.ivPicture)
+                }
+
+                holder.tvTitle.text = volumeInfo.title
+                if (volumeInfo.authors == null) {
+                    holder.tvAuthor.text = "알 수 없음"
+                } else {
+                    holder.tvAuthor.text = if (volumeInfo.authors.size > 1) {
+                        "${volumeInfo.authors[0]}(${volumeInfo.authors.size})"
+                    } else {
+                        volumeInfo.authors[0]
+                    }
+                }
+                holder.tvPublishedDate.text = this.volumeInfo.publishedDate
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-            holder.tvTitle.text = this.volumeInfo.title
-            holder.tvAuthor.text = if (this.volumeInfo.authors.size > 1) {
-                "${this.volumeInfo.authors[0]}(${this.volumeInfo.authors.size})"
-            } else {
-                this.volumeInfo.authors[0]
-            }
-            holder.tvPublishedDate.text = this.volumeInfo.publishedDate
         }
     }
 }

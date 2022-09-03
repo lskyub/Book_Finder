@@ -1,4 +1,4 @@
-package com.bookfinder.adapter
+package com.bookfinder.custom
 
 import android.graphics.Rect
 import android.view.View
