@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,18 +8,36 @@
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:layout_width="match_parent"
+        android:id="@+id/et_book"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp" />
+        android:layout_marginEnd="16dp"
+        android:hint="검색어를 입력하세요."
+        app:layout_constraintEnd_toStartOf="@+id/btn_search"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btn_search"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:scaleType="center"
+        app:layout_constraintBottom_toBottomOf="@+id/et_book"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_book"
+        app:srcCompat="@drawable/ic_baseline_search_24" />
 
     <TextView
         android:id="@+id/tv_results"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Results"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/et_book" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_books"
@@ -28,5 +46,7 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:overScrollMode="never"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-</LinearLayout>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_results" />
+</androidx.constraintlayout.widget.ConstraintLayout>
