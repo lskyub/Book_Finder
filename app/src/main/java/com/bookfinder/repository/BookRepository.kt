@@ -15,8 +15,14 @@ class BookRepository @Inject constructor(
     val applicationContext: Context,
     private val api: ApiService
 ) {
-    fun getBookList(str: String, result: Consumer<Book.RS>, error: Consumer<Throwable>) {
-        api.search(str).subscribeOn(Schedulers.io())
+    fun getBookList(
+        str: String,
+        maxResult: Int,
+        startIndex: Int,
+        result: Consumer<Book.RS>,
+        error: Consumer<Throwable>
+    ) {
+        api.search(str, maxResult, startIndex).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe(result, error)
     }
 }
