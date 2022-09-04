@@ -4,9 +4,11 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bookfinder.Utils.hideKeyboard
+import com.bookfinder.constants.Constants
 import com.bookfinder.custom.BookScrollListener
 import com.bookfinder.custom.SearchTextWatcher
-import com.bookfinder.model.Book
+import com.bookfinder.model.ViewTypeModel
 import com.bookfinder.repository.BookRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -20,40 +22,51 @@ class MainViewModel @Inject constructor(
 
     private var beforStr = ""
 
-    private val booksList = arrayListOf<Book.RS.Items>()
+    private val booksList = arrayListOf<ViewTypeModel>()
 
-    private val books: MutableLiveData<List<Book.RS.Items>> = MutableLiveData<List<Book.RS.Items>>()
+    private val books: MutableLiveData<List<ViewTypeModel>> = MutableLiveData<List<ViewTypeModel>>()
 
     private val total: MutableLiveData<String> = MutableLiveData<String>()
 
+    private var isCallApi = false
+
     private fun laodBooks(str: String = beforStr, start: Int = booksList.size) {
+        repository.cancelApi()
         if (str.isNullOrEmpty() || str.isNullOrBlank()) {
             total.value = ""
             books.value = booksList
         } else {
-            repository.getBookList("$str", mMaxResult, start, {
-                booksList.addAll(it.items)
+            synchronized(isCallApi) {
+                isCallApi = true
+                booksList.add(ViewTypeModel(Constants.ViewType.LOADING))
                 books.value = booksList
-                total.value = it.totalItems
-            }, {
-                Log.i("book", "${it.message}")
-            })
+                repository.getBookList("$str", mMaxResult, start, {
+                    isCallApi = false
+                    booksList.removeAt(booksList.size - 1)
+                    booksList.addAll(it.items)
+                    books.value = booksList
+                    total.value = it.totalItems
+                }, {
+                    isCallApi = false
+                })
+            }
         }
-
     }
 
     fun getTotal(): LiveData<String> {
         return total
     }
 
-    fun getBookList(): LiveData<List<Book.RS.Items>> {
+    fun getBookList(): LiveData<List<ViewTypeModel>> {
         return books
     }
 
     fun getScrollListener(layoutManager: LinearLayoutManager): BookScrollListener {
         return object : BookScrollListener(layoutManager) {
             override fun onLoadMore() {
-                laodBooks()
+                if (!isCallApi) {
+                    laodBooks()
+                }
             }
         }
     }
@@ -62,11 +75,13 @@ class MainViewModel @Inject constructor(
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             beforStr = s?.toString() ?: ""
             booksList.clear()
+            laodBooks()
         }
     }
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.btn_search) {
+            v.hideKeyboard()
             booksList.clear()
             laodBooks()
         }

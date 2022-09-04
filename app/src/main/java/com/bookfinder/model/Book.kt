@@ -1,11 +1,13 @@
 package com.bookfinder.model
 
+import com.bookfinder.constants.Constants
+
 /**
  * Google Book api를 통해 받은 응답 모델
  */
 object Book {
     class RS(var kind: String, var totalItems: String, var items: ArrayList<Items>) {
-        class Items(
+        open class Items(
             var kind: String,
             var id: String,
             var etag: String,
@@ -14,7 +16,7 @@ object Book {
             var saleInfo: SaleInfo,
             var accessInfo: AccessInfo,
             var searchInfo: SearchInfo
-        ) {
+        ) : ViewTypeModel() {
             class VolumeInfo(
                 var title: String,
                 var subtitle: String,
@@ -60,7 +62,7 @@ object Book {
                     var currencyCode: String,
                     var listPrice: MicrosPrice,
                     var retailPrice: MicrosPrice
-                ){
+                ) {
                     class MicrosPrice(var amountInMicros: Long, var currencyCode: String)
                 }
             }

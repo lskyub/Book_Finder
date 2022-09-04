@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bookfinder.custom.BookAdapter
 import com.bookfinder.custom.BookDecoration
 import com.bookfinder.model.Book
+import com.bookfinder.model.ViewTypeModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,18 +48,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val differ: DiffUtil.ItemCallback<Book.RS.Items> =
-        object : DiffUtil.ItemCallback<Book.RS.Items>() {
+    private val differ: DiffUtil.ItemCallback<ViewTypeModel> =
+        object : DiffUtil.ItemCallback<ViewTypeModel>() {
             override fun areItemsTheSame(
-                oldItem: Book.RS.Items,
-                newItem: Book.RS.Items
+                oldItem: ViewTypeModel,
+                newItem: ViewTypeModel
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: Book.RS.Items,
-                newItem: Book.RS.Items
+                oldItem: ViewTypeModel,
+                newItem: ViewTypeModel
             ): Boolean {
                 return oldItem.toString() == newItem.toString()
             }
