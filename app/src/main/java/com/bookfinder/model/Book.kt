@@ -1,5 +1,8 @@
 package com.bookfinder.model
 
+/**
+ * Google Book api를 통해 받은 응답 모델
+ */
 object Book {
     class RS(var kind: String, var totalItems: String, var items: ArrayList<Items>) {
         class Items(

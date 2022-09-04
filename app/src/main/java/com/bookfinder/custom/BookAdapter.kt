@@ -1,8 +1,6 @@
 package com.bookfinder.custom
 
 import android.content.Context
-import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
@@ -16,6 +14,11 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 
+/**
+ * Book Adapter
+ * api에서 전달 받은 책 데이터를 리스트에 그려주기 위한 Adapter
+ * ListAdapter 를 통해 내부에서 데이터의 DiffUtil를 사용
+ */
 class BookAdapter(
     var context: Context,
     diffCallback: DiffUtil.ItemCallback<Book.RS.Items>

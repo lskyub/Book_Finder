@@ -20,6 +20,10 @@ import java.net.CookiePolicy
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+/**
+ * Network에 대한 객체 생성을 함
+ * Hilt를 통한 의존성 주입으로 repository 를 통해 사용
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
