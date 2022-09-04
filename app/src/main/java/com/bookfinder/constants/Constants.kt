@@ -14,4 +14,9 @@ object Constants {
         const val WRITE_TIMEOUT: Long = 30
         const val READ_TIMEOUT: Long = 30
     }
+
+    object ViewType {
+        const val BOOK: Int = 0
+        const val LOADING: Int = 1
+    }
 }
